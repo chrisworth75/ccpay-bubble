@@ -1,15 +1,21 @@
-FROM hmctspublic.azurecr.io/base/node:18-alpine as base
-
-USER root
-RUN corepack enable
-USER hmcts
+FROM node:18-alpine as base
 
 ENV WORKDIR /opt/app
 WORKDIR ${WORKDIR}
 
-COPY --chown=hmcts:hmcts . .
+# Enable corepack for yarn
+RUN corepack enable
+
+# Copy package files first for better caching
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+
+# Install dependencies
 RUN yarn workspaces focus --all --production \
   && yarn cache clean
+
+# Copy application code
+COPY . .
 
 EXPOSE 3000
 CMD [ "yarn", "start" ]
