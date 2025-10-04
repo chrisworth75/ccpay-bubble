@@ -2,8 +2,8 @@ security:
   referrerPolicy: origin
 idam:
   client_id: paybubble
-  login_url: http://localhost:5000/login
-  api_url: http://localhost:5000
+  login_url: http://localhost:5556/login
+  api_url: http://localhost:5556
 session:
   cookieName: SESSION_ID
 environment:
